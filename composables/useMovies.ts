@@ -1,5 +1,5 @@
 import type { AddFavoriteMovie } from "~/interfaces/addFavoriteMovie";
-import {  fetchDetailMovie, fetchDiscoverMovie, fetchFavoriteMovie, fetchMovieGenres, fetchReviewsMovie, fetchSearchMovie, fetchTrandingMovie, postFavoriteMovie } from "~/services/tmdbService";
+import {  fetchDetailMovie, fetchDiscoverMovie, fetchFavoriteMovie, fetchMovieGenres, fetchRecomendationMovies, fetchReviewsMovie, fetchSearchMovie, fetchTrandingMovie, postFavoriteMovie } from "~/services/tmdbService";
 
 export const useMovies = () => {
 
@@ -49,5 +49,8 @@ export const useMovies = () => {
     return result
   }
 
-  return {  getMovieGenres, getTrandingMovie , getDiscoverMovie, addFavoriteMovie, getFavoriteMovie, getSearchMovie, getDetailMovie, getReviewsMovie};
+  const getRecomendationMovies = async(params:{page: number, movieId: string}) => await fetchRecomendationMovies({movieId:params.movieId, page:params.page});
+
+
+  return {  getMovieGenres, getTrandingMovie , getDiscoverMovie, addFavoriteMovie, getFavoriteMovie, getSearchMovie, getDetailMovie, getReviewsMovie, getRecomendationMovies};
 };

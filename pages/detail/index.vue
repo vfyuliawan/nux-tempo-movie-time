@@ -5,13 +5,18 @@ import { useMovies } from "../../composables/useMovies";
 import type { DetailMovieInterface } from "../../interfaces/detailMovie";
 import { GeneralEnum } from "../../types/generalEnum";
 import type { ReviewsMovieInterface } from "../../interfaces/reviewMovie";
+import type { MoviesInterface } from "../../interfaces/movies";
+import type { Result } from '../../interfaces/movies';
 
 const route = useRoute();
-const { getDetailMovie, getReviewsMovie } = useMovies();
+const router = useRouter();
+const { getDetailMovie, getReviewsMovie, getRecomendationMovies } = useMovies();
 const detailMovie = ref<DetailMovieInterface>();
 const reviewMovie = ref<ReviewsMovieInterface>();
+const recomendationMovies = ref<MoviesInterface>();
 const isLoading = ref<boolean>(false);
 const pageinit = ref<number>(1);
+const pageRecomendation = ref<number>(1);
 const uriImg = GeneralEnum.baseUriImg;
 
 useSeoMeta({
@@ -46,6 +51,18 @@ const fetchReviewMovieDetail = async (id: string) => {
   }
 };
 
+const fetchRecomendationMovie = async (id: string) => {
+  isLoading.value = true;
+  const response = await getRecomendationMovies({
+    movieId: id,
+    page: pageRecomendation.value,
+  });
+  if (response !== null) {
+    recomendationMovies.value = response;
+    isLoading.value = false;
+  }
+};
+
 const handleLoadMore = (paramsPage: number, add: boolean) => {
   if (add) {
     pageinit.value = pageinit.value + paramsPage;
@@ -58,12 +75,27 @@ watchEffect(() => {
   const movieId = route.query.id;
   fetchMovieDetails(movieId?.toString() ?? "");
   fetchReviewMovieDetail(movieId?.toString() ?? "");
+  fetchRecomendationMovie(movieId?.toString() ?? "");
 });
+
+const handleChoseMovie = (item: Result) => {
+  const movieListElement = document.getElementById("loadingId");
+  if (movieListElement) {
+    movieListElement.scrollIntoView({
+      behavior: "smooth",
+      block: "start",    
+    });
+  }
+  router.push({ path: "/detail", query: { id: item.id } });
+};
 
 watch([pageinit], async () => {
   const movieId = route.query.id;
   await fetchReviewMovieDetail(movieId?.toString() ?? "");
 });
+
+
+
 </script>
 
 <template>
@@ -73,7 +105,12 @@ watch([pageinit], async () => {
   >
     <Loading :color="'text-custom-red'" :class="'mt-10'" />
   </div>
-  <div :class="reviewMovie?.results.length === 0 ? 'h-[100vh]' : 'h-[180vh]'" class="w-full bg-white">
+  <div id="loadingId" v-if="!isLoading"
+    :class="
+      reviewMovie?.results.length === 0 ? 'h-[100vh]' : 'h-[300vh] lg:h-[180vh]'
+    "
+    class="w-full bg-white"
+  >
     <div class="w-full relative">
       <div class="w-full h-[750px] bg-black opacity-50">
         <img
@@ -206,12 +243,19 @@ watch([pageinit], async () => {
             </div>
             <div class="bg-card-gray text-lg mt-2 font-semibold mb-6"></div>
             <!-- Load More Comment -->
-            <div v-if="reviewMovie?.results.length === 0" class="flex flex-row w-full justify-center mt-3">
-              <p class="text-lg text-slate-800 font-semibold">Tidak Ada Review</p>
+            <div
+              v-if="reviewMovie?.results.length === 0"
+              class="flex flex-row w-full justify-center mt-3"
+            >
+              <p class="text-lg text-slate-800 font-semibold">
+                Tidak Ada Review
+              </p>
             </div>
 
             <div
-              v-if="!isLoading && pageinit == 1 && reviewMovie?.results.length !== 0 "
+              v-if="
+                !isLoading && pageinit == 1 && reviewMovie?.results.length !== 0
+              "
               class="flex justify-center flex-row mt-3"
             >
               <div
@@ -274,9 +318,50 @@ watch([pageinit], async () => {
                 Overview
               </p>
               <p class="mt-4 text-[13px] text-gray-600">
-                {{ truncateText(detailMovie?.overview ??"", 5000) }}
+                {{ truncateText(detailMovie?.overview ?? "", 5000) }}
               </p>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div  v-if="!isLoading" class="flex w-full bg-slate-800 px-20 py-20 flex-col">
+    <p class="text-slate-100">RECOMMENDATION MOVIES</p>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mt-3">
+      <div
+        v-for="(item, index) in recomendationMovies?.results.slice(0, 5)"
+        :key="index"
+        @click="handleChoseMovie(item)"
+        class="relative flex flex-col overflow-hidden group cursor-pointer"
+      >
+        <div
+          class="xl:h-[380px] w-full bg-black bg-opacity-50 overflow-hidden relative"
+        >
+          <img
+            :src="uriImg + item.poster_path"
+            alt=""
+            class="object-cover w-full h-full"
+          />
+        </div>
+
+        <div class="absolute top-0 right-0">
+          <div
+            class="w-[48px] justify-center flex items-center h-[32px] bg-black opacity-75 text-slate-50"
+          >
+            <p class="text-lg text-slate-200 font-bold">
+              {{ formatRating(item.vote_average) }}
+            </p>
+          </div>
+        </div>
+        <div class="flex ms-3 flex-col gap-2 mt-2">
+          <p class="text-slate-50 text-lg font-semibold">
+            {{ item.title }}
+          </p>
+          <div class="flex flex-row gap-2">
+            <p class="text-slate-400 text-sm">
+              {{ formatingYears(item.release_date) }}
+            </p>
           </div>
         </div>
       </div>

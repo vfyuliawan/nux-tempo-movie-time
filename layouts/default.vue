@@ -23,7 +23,7 @@ const genreSelected = (item: DropdownItem) => {
 
     <main>
       <!-- Pass slot props -->
-      <slot :genres="genres" :onGenreSelected="genreSelected" />
+      <slot  />
     </main>
 
     <footer>

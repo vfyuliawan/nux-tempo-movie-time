@@ -126,8 +126,8 @@ const handleLoadMore = (paramsPage:number, add: boolean) => {
   const movieListElement = document.getElementById("movieList");
   if (movieListElement) {
     movieListElement.scrollIntoView({
-      behavior: "smooth", // Smooth scrolling
-      block: "start",     // Align to the top of the section
+      behavior: "smooth",
+      block: "start",    
     });
   }
   if (add) {
@@ -298,21 +298,13 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
                     <!-- Movie Info -->
                     <div class="flex ms-3 flex-col gap-2 mt-2">
                       <p class="text-slate-50 text-lg font-semibold">
-                        {{ formatingYears(item.release_date) }}
+                        {{ item.title }}
                       </p>
                       <div class="flex flex-row gap-2">
                         <p
-                          v-for="(itemGenre, index2) in getGenreName(
-                            item.genre_ids
-                          )"
-                          :key="index2"
                           class="text-slate-400 text-sm"
                         >
-                          {{
-                            itemGenre === "Science Fiction"
-                              ? "Sci-Fi"
-                              : itemGenre
-                          }}
+                        {{ formatingYears(item.release_date) }}
                         </p>
                       </div>
                     </div>

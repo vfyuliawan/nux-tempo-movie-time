@@ -115,4 +115,17 @@ const ACCESSTOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NzAyNmJiNGYzNWM4ZDU
     return response;
   };
 
+
+  export const fetchRecomendationMovies = async (params:{page: number, movieId: string}):Promise<MoviesInterface | null> => {
+    const response  : MoviesInterface  = await $fetch(`${BASE_URL}/movie/${params.movieId}/recommendations?language=en-US&page=${params.page}`, {
+      method:"get",
+      params: { api_key: API_KEY },
+      headers:{
+        accept: 'application/json',
+        Authorization: ACCESSTOKEN
+      },
+    });
+    return response;
+  };
+
   
