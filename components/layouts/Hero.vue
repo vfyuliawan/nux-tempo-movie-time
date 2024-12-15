@@ -25,15 +25,13 @@ const getGenreById = (idGenres: number[]) => {
   return genres;
 };
 
-
 const moviesTrandingList = ref<MoviesInterface>();
 const genreList = ref<Genre[]>();
 
 const { getTrandingMovie, getMovieGenres } = useMovies();
 
 onMounted(async () => {
-  getGenreString()
-
+  getGenreString();
 
   const res = await getTrandingMovie();
   const genresMovie = await getMovieGenres();
@@ -67,11 +65,11 @@ onMounted(async () => {
           <img :src="uriImg + item.poster_path" class="overflow-hidden" />
         </div>
         <div
-          class="w-[265px] text-start flex-col hidden lg:block py-14 px-4 bg-black h-[324px]"
+          class="lg:w-[265px] text-start flex-col hidden lg:block py-14 px-4 bg-black h-[324px]"
         >
-          <div class="flex flex-row gap-3 items-center">
-            <div class="h-[16px] w-[16px]">
-              <img src="/assets/startRating.png" class="overflow-hidden" />
+          <div class="flex flex-row gap-2 items-center">
+            <div class="h-[23px] w-[23px]overflow-hidden">
+              <img src="/assets/startRating.png" class="object-cover" />
             </div>
             <p class="text-slate-50">
               {{ formatRating(item.vote_average) }}
@@ -89,14 +87,17 @@ onMounted(async () => {
           </div>
           <div class="flex flex-row justify-start items-center gap-3">
             <p
-              v-for="(item2, key2) in getGenreById(item.genre_ids).splice(0, 3)"
+              v-for="(itemGenre, key2) in getGenreById(item.genre_ids).splice(
+                0,
+                3
+              )"
               :key="key2"
               class="text-slate-50 text-lg"
             >
-              {{ item2 }}
+              {{ itemGenre === "Science Fiction" ? "Sci-Fi" : itemGenre }}
             </p>
           </div>
-          <p class="text-slate-50 text-xs ">
+          <p class="text-slate-50 text-xs">
             {{
               item.overview.length > 200
                 ? item.overview.substring(0, 200) + "..."

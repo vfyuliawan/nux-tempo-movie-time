@@ -1,6 +1,8 @@
 import { ConvertGenreInterface, type Genre, type GenreInterface } from "~/interfaces/genre";
 import { ConvertMoviesInterface, type MoviesInterface } from "~/interfaces/movies";
 import { ConvertAddFavoriteMovie, type AddFavoriteMovie } from '../interfaces/addFavoriteMovie';
+import type { DetailMovieInterface } from "~/interfaces/detailMovie";
+import type { ReviewsMovieInterface } from "~/interfaces/reviewMovie";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const API_KEY = "47026bb4f35c8d526f38515060cd7126";
@@ -47,6 +49,18 @@ const ACCESSTOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NzAyNmJiNGYzNWM4ZDU
   };
 
 
+  export const fetchSearchMovie = async (params:{title: string , page:number}):Promise<MoviesInterface | null>=> {
+    const response : MoviesInterface  = await $fetch(`${BASE_URL}/search/movie?query=${params.title}&include_adult=false&language=en-US&page=${params.page}&sort_by=popularity.desc`, {
+      params: { api_key: API_KEY },
+      headers:{
+        accept: 'application/json',
+        Authorization: ACCESSTOKEN
+      }
+    });
+    return response;
+  };
+
+
   export const postFavoriteMovie = async (body:AddFavoriteMovie) => {
     const response  = await $fetch(`${BASE_URL}/account/${ACCOUNTID}/favorite`, {
       method:"POST",
@@ -65,6 +79,32 @@ const ACCESSTOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NzAyNmJiNGYzNWM4ZDU
 
   export const fetchFavoriteMovie = async ():Promise<MoviesInterface | null> => {
     const response  : MoviesInterface  = await $fetch(`${BASE_URL}/account/${ACCOUNTID}/favorite/movies?language=en-US&page=1&sort_by=created_at.asc`, {
+      method:"get",
+      params: { api_key: API_KEY },
+      headers:{
+        accept: 'application/json',
+        Authorization: ACCESSTOKEN
+      },
+    });
+    return response;
+  };
+
+
+  export const fetchDetailMovie = async (movieId : string):Promise<DetailMovieInterface | null> => {
+    const response  : DetailMovieInterface  = await $fetch(`${BASE_URL}/movie/${movieId}?language=en-US`, {
+      method:"get",
+      params: { api_key: API_KEY },
+      headers:{
+        accept: 'application/json',
+        Authorization: ACCESSTOKEN
+      },
+    });
+    return response;
+  };
+
+
+  export const fetchReviewsMovie = async (params:{page: number, movieId: string}):Promise<ReviewsMovieInterface | null> => {
+    const response  : ReviewsMovieInterface  = await $fetch(`${BASE_URL}/movie/${params.movieId}/reviews?language=en-US&page=${params.page}`, {
       method:"get",
       params: { api_key: API_KEY },
       headers:{
