@@ -6,6 +6,7 @@ import type { MoviesInterface } from "~/interfaces/movies";
 import { GeneralEnum } from "../../types/generalEnum";
 import type { AddFavoriteMovie } from '../../interfaces/addFavoriteMovie';
 import { postFavoriteMovie } from '../../services/tmdbService';
+import type { Result } from '../../interfaces/movies';
 
 const { getMovieGenres, getDiscoverMovie , addFavoriteMovie, getFavoriteMovie} = useMovies();
 const movieList = ref<MoviesInterface | null>();
@@ -19,6 +20,8 @@ const isLoading = ref<boolean>(true);
 const page = ref<number>(1);
   const favMovieLength = ref<number>(0);
   const isShowAlert = ref(false);
+
+  const route = useRouter();
 
 const props = defineProps<{
   genre?: string;
@@ -113,6 +116,10 @@ const handleAddMovieFavorite = async(req: AddFavoriteMovie) =>{
   }, 2000);
  }
 }
+
+const handleChoseMovie = (item: Result) => {
+  route.push({ path: "/detail", query: { id: item.id } });
+};
 
 
 const handleLoadMore = (paramsPage:number, add: boolean) => {
@@ -273,6 +280,7 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
                           </p>
                         </div>
                         <button
+                        @click="handleChoseMovie(item)"
                           class="bg-custom-red mt-3 px-12 py-2  sm:mt-6 sm:px-14 hover:bg-red-700 justify-center flexm cursor-pointer rounded-2xl  md:rounded-2xl text-slate-100"
                         >
                           View

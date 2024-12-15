@@ -8,9 +8,12 @@ import { useMovies } from "../../composables/useMovies";
 import type { MoviesInterface } from "../../interfaces/movies";
 import { GeneralEnum } from "../../types/generalEnum";
 import type { Genre } from "../../interfaces/genre";
+import type { Result } from '../../interfaces/movies';
 
 const isActiveIndex = ref(0);
 const modules = [Autoplay];
+const router = useRouter();
+
 
 const uriImg = GeneralEnum.baseUriImg;
 
@@ -40,6 +43,11 @@ onMounted(async () => {
     genreList.value = genresMovie.genres;
   }
 });
+
+
+const handleChoseMovie = (item: Result) => {
+  router.push({ path: "/detail", query: { id: item.id } });
+};
 </script>
 
 <template>
@@ -56,7 +64,8 @@ onMounted(async () => {
     <swiper-slide
       v-for="(item, index) in moviesTrandingList?.results"
       :key="index"
-      class="bg-slate-700"
+      @click="handleChoseMovie(item)"
+      class="bg-slate-700 cursor-pointer"
     >
       <div
         class="flex h-[364px] w-[541px] bg-slate-700 justify-center items-center"

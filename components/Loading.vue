@@ -27,6 +27,6 @@ const props = defineProps<{
         d="M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z"
       ></path>
     </svg>
-    <p class="text-slate-400 text-sm mt-2">Loading movies...</p>
+    <p class="text-slate-400 text-sm mt-2">Loading ...</p>
   </div>
 </template>

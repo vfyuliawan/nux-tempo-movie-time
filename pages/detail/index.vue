@@ -73,7 +73,7 @@ watch([pageinit], async () => {
   >
     <Loading :color="'text-custom-red'" :class="'mt-10'" />
   </div>
-  <div class="w-full bg-white h-[180vh]">
+  <div :class="reviewMovie?.results.length === 0 ? 'h-[100vh]' : 'h-[180vh]'" class="w-full bg-white">
     <div class="w-full relative">
       <div class="w-full h-[750px] bg-black opacity-50">
         <img
@@ -211,7 +211,7 @@ watch([pageinit], async () => {
             </div>
 
             <div
-              v-if="!isLoading && pageinit == 1"
+              v-if="!isLoading && pageinit == 1 && reviewMovie?.results.length !== 0 "
               class="flex justify-center flex-row mt-3"
             >
               <div
@@ -274,15 +274,7 @@ watch([pageinit], async () => {
                 Overview
               </p>
               <p class="mt-4 text-[13px] text-gray-600">
-                If you enjoy reading my Spoiler-Free reviews, please follow my
-                blog @ https://www.msbreviews.com The superhero genre has been
-                growing exponentially during the last decade, so it's bizarre to
-                go through an entire year with only Birds of Prey and The New
-                Mutants instead of literally dozens of films from both Marvel
-                and DC. Thankfully, Warner Bros. decided to release Wonder Woman
-                1984 before the year's end, but not without a catch. Most people
-                will only have the possibility of watching one of the few
-                blockbusters of 2020 through HBO Max, a streaming service only
+                {{ truncateText(detailMovie?.overview ??"", 5000) }}
               </p>
             </div>
           </div>
