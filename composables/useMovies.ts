@@ -1,4 +1,5 @@
-import {  fetchDiscoverMovie, fetchMovieGenres, fetchTrandingMovie } from "~/services/tmdbService";
+import type { AddFavoriteMovie } from "~/interfaces/addFavoriteMovie";
+import {  fetchDiscoverMovie, fetchFavoriteMovie, fetchMovieGenres, fetchTrandingMovie, postFavoriteMovie } from "~/services/tmdbService";
 
 export const useMovies = () => {
 
@@ -23,5 +24,16 @@ export const useMovies = () => {
     return result
   }
 
-  return {  getMovieGenres, getTrandingMovie , getDiscoverMovie};
+
+  const addFavoriteMovie = async (body: AddFavoriteMovie) =>{
+    const result = await postFavoriteMovie(body)
+    return result;
+  }
+
+  const getFavoriteMovie = async () =>{
+    const result = await fetchFavoriteMovie()
+    return result;
+  }
+
+  return {  getMovieGenres, getTrandingMovie , getDiscoverMovie, addFavoriteMovie, getFavoriteMovie};
 };

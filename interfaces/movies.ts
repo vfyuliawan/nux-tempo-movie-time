@@ -1,8 +1,4 @@
-// To parse this data:
-//
-//   import { Convert, Movies } from "./file";
-//
-//   const movies = Convert.toMovies(json);
+
 
 export interface MoviesInterface {
     page:          number;
@@ -38,7 +34,6 @@ export enum OriginalLanguage {
     Zh = "zh",
 }
 
-// Converts JSON strings to/from your types
 export class ConvertMoviesInterface {
     public static toMovies(json: string): MoviesInterface {
         return JSON.parse(json);

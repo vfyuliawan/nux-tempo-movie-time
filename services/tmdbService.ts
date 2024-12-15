@@ -1,9 +1,11 @@
 import { ConvertGenreInterface, type Genre, type GenreInterface } from "~/interfaces/genre";
-import type { MoviesInterface } from "~/interfaces/movies";
+import { ConvertMoviesInterface, type MoviesInterface } from "~/interfaces/movies";
+import { ConvertAddFavoriteMovie, type AddFavoriteMovie } from '../interfaces/addFavoriteMovie';
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const API_KEY = "47026bb4f35c8d526f38515060cd7126";
-const ACCESSTOKEN = "Bearer Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NzAyNmJiNGYzNWM4ZDUyNmYzODUxNTA2MGNkNzEyNiIsIm5iZiI6MTczMzg4NDI2Ni44Miwic3ViIjoiNjc1OGY5NmEyZDIwMGM4NGYxOTExMzc1Iiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.pm6Fo4E5Ch7zcW1B99vYLLG8soFOXqXO5C2D9NnHAwI"
+const ACCOUNTID = "21681596";
+const ACCESSTOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NzAyNmJiNGYzNWM4ZDUyNmYzODUxNTA2MGNkNzEyNiIsIm5iZiI6MTczMzg4NDI2Ni44Miwic3ViIjoiNjc1OGY5NmEyZDIwMGM4NGYxOTExMzc1Iiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.pm6Fo4E5Ch7zcW1B99vYLLG8soFOXqXO5C2D9NnHAwI"
 
   
   export const fetchMovieGenres = async ():Promise<GenreInterface | null>=> {
@@ -41,9 +43,36 @@ const ACCESSTOKEN = "Bearer Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NzAyNmJiNGYz
         Authorization: ACCESSTOKEN
       }
     });
-
     return response;
-    
+  };
+
+
+  export const postFavoriteMovie = async (body:AddFavoriteMovie) => {
+    const response  = await $fetch(`${BASE_URL}/account/${ACCOUNTID}/favorite`, {
+      method:"POST",
+      params: { api_key: API_KEY },
+      headers:{
+        accept: 'application/json',
+        'content-type': 'application/json',
+        Authorization: ACCESSTOKEN
+      },
+      body: ConvertAddFavoriteMovie.addFavoriteMovieToJson(body)
+
+    });
+    return response;
+  };
+
+
+  export const fetchFavoriteMovie = async ():Promise<MoviesInterface | null> => {
+    const response  : MoviesInterface  = await $fetch(`${BASE_URL}/account/${ACCOUNTID}/favorite/movies?language=en-US&page=1&sort_by=created_at.asc`, {
+      method:"get",
+      params: { api_key: API_KEY },
+      headers:{
+        accept: 'application/json',
+        Authorization: ACCESSTOKEN
+      },
+    });
+    return response;
   };
 
   

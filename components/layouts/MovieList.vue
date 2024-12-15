@@ -4,8 +4,10 @@ import type { Genre } from "~/interfaces/genre";
 import type { DropdownItem } from "../Dropdown.vue";
 import type { MoviesInterface } from "~/interfaces/movies";
 import { GeneralEnum } from "../../types/generalEnum";
+import type { AddFavoriteMovie } from '../../interfaces/addFavoriteMovie';
+import { postFavoriteMovie } from '../../services/tmdbService';
 
-const { getMovieGenres, getDiscoverMovie } = useMovies();
+const { getMovieGenres, getDiscoverMovie , addFavoriteMovie, getFavoriteMovie} = useMovies();
 const movieList = ref<MoviesInterface | null>();
 const movieGenres = ref<Genre[]>([]);
 
@@ -15,6 +17,8 @@ const dropDownSelected = ref<string>("popularity.desc");
 const genreSelected = ref<string>();
 const isLoading = ref<boolean>(true);
 const page = ref<number>(1);
+  const favMovieLength = ref<number>(0);
+  const isShowAlert = ref(false);
 
 const props = defineProps<{
   genre?: string;
@@ -43,6 +47,7 @@ dropDownValue.value = [
   { id: "revenue.asc", name: "Revenue Ascending" } as DropdownItem,
   { id: "revenue.desc", name: "Revenue Descending" } as DropdownItem,
 ];
+
 const genreResponse = await getMovieGenres();
 const mapResponse = genreResponse?.genres.map((item, index) => {
   return {
@@ -58,31 +63,78 @@ isLoading.value = false;
 genreSelected.value =
   mapResponse?.find((item) => item.isActive === true)?.id.toString() ?? "";
 
-const fetchMovies = async () => {
+const fetchMovies = async (pageparams?: number) => {
   isLoading.value = true;
   const movieResponse = await getDiscoverMovie({
-    page: `${page.value}`,
+    page: `${pageparams?? page.value}`,
     sort_by: dropDownSelected.value ?? "",
     genre: genreSelected.value ?? "",
   });
   movieList.value = movieResponse;
   setTimeout(() => {
-  isLoading.value = false;
-    
-  }, 300);
+    isLoading.value = false;
+  }, 1000);
+ 
 };
 
-await fetchMovies();
 
-watch([dropDownSelected, page], async () => {
+const fetchFavoriteMovies = async() =>{
+  const resp = await getFavoriteMovie()
+  if (resp !== null) {
+    return resp;
+  }
+}
+
+await fetchMovies().then(async() => {
+  await fetchFavoriteMovies().then((resp) =>{
+    favMovieLength.value = resp?.total_results ?? 0;
+    setTimeout(() => {
+    isLoading.value = false;
+  }, 500);
+  })
+});
+
+watch([dropDownSelected, genreSelected], async () => {
+  await fetchMovies(1);
+});
+
+watch([page], async () => {
   await fetchMovies();
 });
 
-const handleLoadMore = () =>{
-  page.value = page.value+1
-  console.log(page);
-  
+
+const handleAddMovieFavorite = async(req: AddFavoriteMovie) =>{
+ const response =  await addFavoriteMovie(req)
+ if (response !== null) {
+  favMovieLength.value += 1;
+  isShowAlert.value = true;
+  setTimeout(() => {
+  isShowAlert.value = false;
+  }, 2000);
+ }
 }
+
+
+const handleLoadMore = (paramsPage:number, add: boolean) => {
+  const movieListElement = document.getElementById("movieList");
+  if (movieListElement) {
+    movieListElement.scrollIntoView({
+      behavior: "smooth", // Smooth scrolling
+      block: "start",     // Align to the top of the section
+    });
+  }
+  if (add) {
+    page.value = page.value + paramsPage;
+  }else{
+    page.value = page.value - paramsPage;
+  }
+};
+
+const handleSelectGenre = (item: Genre) => {
+  movieGenres.value.forEach((genre: Genre) => (genre.isActive = false));
+  item.isActive = true;
+  genreSelected.value = item.id.toString();
+};
 
 const handleDropdownClick = (item: { name: string; id: string }) => {
   dropDownSelected.value = item.id;
@@ -90,8 +142,8 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
 </script>
 
 <template>
-  <div class="relative w-full h-[500px] bg-slate-600">
-    <div class="absolute top-20 w-full bg-transparentpx-6 py-4 px-32">
+  <div id="movieList" class="relative w-full h-[500px] bg-slate-600">
+    <div class="absolute top-20 w-full bg-transparentpx-6 py-4 px-12 xl:px-32">
       <div class="flex flex-row justify-between">
         <div class="flex-col hidden sm:block">
           <div class="w-[100px] h-[6px] bg-custom-red mb-2"></div>
@@ -101,7 +153,7 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
           class="flex items-center justify-evenly sm:justify-start flex-row w-[180px]"
         >
           <p class="text-slate-50 text-sm me-3">My Movies</p>
-          <p class="text-slate-50 text-sm">2 Movies</p>
+          <p class="text-slate-50 text-sm">{{ favMovieLength }} Movies</p>
         </div>
       </div>
       <div class="flex sm:flex-none flex-row mt-10">
@@ -134,12 +186,7 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
               >
                 <p class="text-slate-100 text-sm">{{ item.name }}</p>
                 <input
-                  @click="
-                    () => {
-                      movieGenres.forEach((genre) => (genre.isActive = false));
-                      item.isActive = true;
-                    }
-                  "
+                  @click="handleSelectGenre(item)"
                   :checked="item.isActive"
                   id="checked-checkbox"
                   type="checkbox"
@@ -150,73 +197,108 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
             </div>
           </div>
         </div>
-        <div class="flex flex-1 w-full h-auto px-8">
-          <div class="flex-col  w-full col">
-            <div class="flex flex-row w-full ">
+        <div class="flex flex-1 w-full h-auto  md:px-8">
+          <div class="flex-col w-full col">
+            <div class="flex flex-row w-full">
               <div class="w-full justify-center items-center flex flex-row">
-              <div
-                v-if="isLoading"
-                class="flex justify-center items-center h-[400px]"
-              >
-                <Loading :color="'text-custom-red'"/>
-              </div>
-
-              <div
-                v-else
-                class="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full"
-              >
                 <div
-                  v-for="(item, index) in movieList?.results"
-                  :key="index"
-                  class="relative flex flex-col overflow-hidden group"
+                  v-if="isLoading"
+                  class="flex justify-center items-center h-[400px]"
+                >
+                  <Loading :color="'text-custom-red'" />
+                </div>
+
+                <div
+                  v-else
+                  class="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full"
                 >
                   <div
-                    class="h-[330px] w-full bg-black bg-opacity-50 overflow-hidden relative"
+                    v-for="(item, index) in movieList?.results"
+                    :key="index"
+                    class="relative flex flex-col overflow-hidden group"
                   >
-                    <img
-                      :src="baseImgUrl + item.poster_path"
-                      alt=""
-                      class="object-contain w-full"
-                    />
-                  </div>
-
-                  <div class="absolute top-0 right-0">
                     <div
-                      class="w-[48px] justify-center flex items-center h-[32px] bg-black opacity-75 text-slate-50"
+                      class="xl:h-[330px] w-full bg-black bg-opacity-50 overflow-hidden relative"
                     >
-                      <p class="text-sm text-slate-200">
-                        {{ formatRating(item.popularity) }}
-                      </p>
+                      <img
+                        :src="baseImgUrl + item.poster_path"
+                        alt=""
+                        class="object-contain w-full"
+                      />
                     </div>
-                  </div>
 
-                  <div
-                    class="absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  >
-                    <div class="flex-col flex items-center justify-center">
+                    <div class="absolute top-0 right-0">
                       <div
-                        class="flex flex-row justify-center items-center h-full"
+                        class="w-[48px] justify-center flex items-center h-[32px] bg-black opacity-75 text-slate-50"
                       >
-                        <div
-                          class="h-[32px] w-[32px] flex justify-center overflow-hidden items-center"
-                        >
-                          <img
-                            src="/assets/startRating.png"
-                            class=" object-fill"
-                            alt="Rating Icon"
-                          />
-                        </div>
-                        <p class="text-slate-100 text-lg">
-                          {{ formatRating(item.vote_average) }}
+                        <p class="text-sm text-slate-200">
+                          {{ formatRating(item.popularity) }}
                         </p>
                       </div>
+                    </div>
+
+                    <div
+                      class="absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
+                      <div class="flex-col flex items-center justify-center">
+                        <div
+                          class="flex flex-row justify-center items-center h-full"
+                        >
+                          <div
+                            class="h-[32px] w-[32px] flex justify-center overflow-hidden items-center"
+                          >
+                            <img
+                              src="/assets/startRating.png"
+                              class="object-fill"
+                              alt="Rating Icon"
+                            />
+                          </div>
+                          <p class="text-slate-100 text-lg">
+                            {{ formatRating(item.vote_average) }}
+                          </p>
+                        </div>
+                        <div class="flex flex-row gap-2">
+                          <p
+                            v-for="(itemGenre, index2) in getGenreName(
+                              item.genre_ids
+                            )"
+                            :key="index2"
+                            class="text-slate-50 text-sm"
+                          >
+                            {{
+                              itemGenre === "Science Fiction"
+                                ? "Sci-Fi"
+                                : itemGenre
+                            }}
+                          </p>
+                        </div>
+                        <button
+                          class="bg-custom-red mt-3 px-12 py-2  sm:mt-6 sm:px-14 hover:bg-red-700 justify-center flexm cursor-pointer rounded-2xl  md:rounded-2xl text-slate-100"
+                        >
+                          View
+                        </button>
+                        <button
+                        @click="handleAddMovieFavorite({favorite: true, media_id:item.id, media_type:'movie'  })"
+                          class=" focus:bg-focus-green focus:text-slate-600 focus:outline-none focus:ring focus:border-white bg-transparent mt-3 px-12 py-2 sm:mt-6 sm:px-14 justify-center flex p-2 cursor-pointer rounded-2xl   md:rounded-3xl border border-white text-slate-100"
+                        >
+                          Add
+                        </button>
+
+                      </div>
+                    </div>
+
+                    <!-- Movie Info -->
+                    <div class="flex ms-3 flex-col gap-2 mt-2">
+                      <p class="text-slate-50 text-lg font-semibold">
+                        {{ formatingYears(item.release_date) }}
+                      </p>
                       <div class="flex flex-row gap-2">
                         <p
                           v-for="(itemGenre, index2) in getGenreName(
                             item.genre_ids
                           )"
                           :key="index2"
-                          class="text-slate-50 text-sm"
+                          class="text-slate-400 text-sm"
                         >
                           {{
                             itemGenre === "Science Fiction"
@@ -225,61 +307,44 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
                           }}
                         </p>
                       </div>
-                      <div
-                        class="bg-custom-red mt-6 w-[151px] hover:bg-red-700 justify-center flex p-2 cursor-pointer rounded-2xl text-slate-100"
-                      >
-                        View
-                      </div>
-                      <div
-                        class="bg-transparent mt-4 w-[151px] justify-center flex p-2 cursor-pointer rounded-2xl border border-white text-slate-100"
-                      >
-                        Add
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Movie Info -->
-                  <div class="flex ms-3 flex-col gap-2 mt-2">
-                    <p class="text-slate-50 text-lg font-semibold">
-                      {{ formatingYears(item.release_date) }}
-                    </p>
-                    <div class="flex flex-row gap-2">
-                      <p
-                        v-for="(itemGenre, index2) in getGenreName(
-                          item.genre_ids
-                        )"
-                        :key="index2"
-                        class="text-slate-400 text-sm"
-                      >
-                        {{
-                          itemGenre === "Science Fiction" ? "Sci-Fi" : itemGenre
-                        }}
-                      </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            </div>
-          
 
-            <div 
-            v-if="!isLoading"
-            class="flex justify-center flex-row mt-6">
+            <div v-if="!isLoading && page ==1" class="flex justify-center flex-row mt-6">
               <div
-              @click="handleLoadMore"
+                @click="handleLoadMore(1, true)"
                 class="bg-custom-red hover:bg-red-800 w-[151px] justify-center flex p-2 cursor-pointer hover: rounded-2xl text-slate-100"
               >
                 Load More
+              </div>
+            </div>
+            <div v-if="!isLoading &&page!==1" class="flex mt-5 gap-2 justify-center flex-row">
+              <div
+                @click="handleLoadMore(1, false)"
+                class="bg-custom-red hover:bg-red-600  w-[151px] justify-center flex p-2 cursor-pointer hover: rounded-2xl text-slate-100"
+              >
+                Prev
+              </div>
+              <div
+                @click="handleLoadMore(1, true)"
+                class="bg-transparent border border-white hover:font-bold hover:text-slate-700 hover:bg-slate-100 hover:text-md w-[151px] justify-center flex p-2 cursor-pointer rounded-2xl text-slate-100"
+              >
+                Next
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <Alert v-if="isShowAlert" :is-show="isShowAlert" :message="'Berhasil Ditambahkan Ke Favorite'"/>
   </div>
 
-  <div class="w-full h-[130rem] bg-slate-700 px-32"></div>
+  <div class="w-full h-[300rem] lg:h-[130rem] bg-slate-700 px-32"></div>
+
+  
 </template>
 
 <style lang="postcss" scoped></style>
