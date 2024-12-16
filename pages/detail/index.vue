@@ -169,13 +169,13 @@ watch([pageinit], async () => {
             <div class="bg-white h-full w-[2px] opacity-30"></div>
             <div class="flex-col col">
               <h5 class="lg:text-[12px] text-[8px] text-slate-500">PRODUCTION</h5>
-              <div class="lg:text-[12px] text-[8px] text-slate-100 gap-2">
+              <div class="flex flex-row gap-2">
                 <h5
                   v-for="(
                     prod, index
-                  ) in detailMovie?.production_companies.splice(0, 3)"
+                  ) in detailMovie?.production_companies?.splice(0, 3)"
                   :key="index"
-                  class="text-[12px] text-slate-100"
+                  class="lg:text-[12px] text-[8px] text-slate-100 gap-2"
                 >
                   {{ prod.name }}
                 </h5>
