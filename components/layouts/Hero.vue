@@ -85,23 +85,23 @@ const handleChoseMovie = (item: Result) => {
             </p>
           </div>
           <h4
-            class="text-slate-50 text-2xl truncate whitespace-nowrap overflow-hidden"
+            class="text-slate-50 text-md font-bold truncate whitespace-nowrap overflow-hidden"
           >
             {{ item.title }}
           </h4>
           <div class="flex-row items-center flex gap-2">
-            <p class="text-slate-50 text-lg">
+            <p class="text-slate-50 text-md">
               {{ formatingYears(item.release_date) }}
             </p>
           </div>
-          <div class="flex flex-row justify-start items-center gap-3">
+          <div class="flex flex-wrap justify-start items-center gap-3">
             <p
               v-for="(itemGenre, key2) in getGenreById(item.genre_ids).splice(
                 0,
                 3
               )"
               :key="key2"
-              class="text-slate-50 text-lg"
+              class="text-slate-50 text-sm"
             >
               {{ itemGenre === "Science Fiction" ? "Sci-Fi" : itemGenre }}
             </p>
