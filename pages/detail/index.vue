@@ -73,8 +73,8 @@ const handleLoadMore = (paramsPage: number, add: boolean) => {
 
 watchEffect(() => {
   const movieId = route.query.id;
-  fetchMovieDetails(movieId?.toString() ?? "").then(() =>{
-    pageinit.value =1
+  fetchMovieDetails(movieId?.toString() ?? "").then(() => {
+    pageinit.value = 1;
   });
   fetchReviewMovieDetail(movieId?.toString() ?? "");
   fetchRecomendationMovie(movieId?.toString() ?? "");
@@ -123,173 +123,165 @@ watch([pageinit], async () => {
       ></div>
 
       <!-- detail -->
-        <div class="flex flex-col w-full">
-          <!-- <div class="w-full px-3 sm:px-0 h-[80px] py-4 bg-black gap-4 opacity-85 flex flex-row justify-center items-center">
+      <div class="flex flex-col w-full">
+        <!-- <div class="w-full px-3 sm:px-0 h-[80px] py-4 bg-black gap-4 opacity-85 flex flex-row justify-center items-center">
 
           </div> -->
-          <div
-            class="w-full px-5 sm:px-0 h-[80px] py-4 bg-black gap-[5px] lg:gap-3 opacity-85 flex flex-row justify-center items-center"
-          >
-            <div class="h-[32px] w-[32px] overflow-hidden">
-              <img
-                src="/assets/startRating.png"
-                class="object-cover w-full h-full sm:block hidden"
-              />
-            </div>
-            <h3 class="text-slate-50 text-[10px] lg:text-[36px]">
-              {{ formatRating(detailMovie?.vote_average ?? 0) }}
-            </h3>
-            <div class="flex-col col">
-              <h5 class="lg:text-[12px] text-[8px] text-slate-500">USERSCORE</h5>
-              <h5 class="lg:text-[12px] text-[8px] text-slate-100">
-                {{ detailMovie?.vote_count }} Votes
+        <div
+          class="w-full px-5 sm:px-0 h-[80px] py-4 bg-black gap-[5px] lg:gap-3 opacity-85 flex flex-row justify-center items-center"
+        >
+          <div class="h-[16px]  w-[16px] md:h-[32px]  md:w-[32px]  overflow-hidden">
+            <img
+              src="/assets/startRating.png"
+              class="object-cover w-full h-full"
+            />
+          </div>
+          <h3 class="text-slate-50 font-bold text-[14px] lg:text-[36px]">
+            {{ formatRating(detailMovie?.vote_average ?? 0) }}
+          </h3>
+          <div class="flex-col col">
+            <h5 class="lg:text-[12px] text-[8px] text-slate-500">USERSCORE</h5>
+            <h5 class="lg:text-[12px] text-[8px] text-slate-100">
+              {{ detailMovie?.vote_count }} Votes
+            </h5>
+          </div>
+          <div class="bg-white h-full w-[1px] md:w-[2px] opacity-30"></div>
+          <div class="flex-col col">
+            <h5 class="lg:text-[12px] text-[8px] text-slate-500">STATUS</h5>
+            <h5 class="lg:text-[12px] text-[8px] text-slate-100">
+              {{ detailMovie?.status }}
+            </h5>
+          </div>
+          <div class="bg-white h-full w-[1px] md:w-[2px] opacity-30"></div>
+          <div class="flex-col col">
+            <h5 class="lg:text-[12px] text-[8px] text-slate-500">LANGUAGE</h5>
+            <h5 class="lg:text-[12px] text-[8px] text-slate-100">
+              {{ formaterLanguage(detailMovie?.original_language ?? "") }}
+            </h5>
+          </div>
+          <div class="bg-white h-full w-[1px] md:w-[2px] opacity-30"></div>
+          <div class="flex-col col">
+            <h5 class="lg:text-[12px] text-[8px] text-slate-500">BUDGET</h5>
+            <h5 class="lg:text-[12px] text-[8px] text-slate-100">
+              {{ formatCurrency(detailMovie?.budget ?? 0) }}
+            </h5>
+          </div>
+          <div class="bg-white h-full w-[1px] md:w-[2px] opacity-30"></div>
+          <div class="flex-col col">
+            <h5 class="lg:text-[12px] text-[8px] text-slate-500">PRODUCTION</h5>
+              <h5
+                class="lg:text-[12px] text-[8px] text-slate-100"
+              >
+                {{ detailMovie?.production_companies[0].name}}
               </h5>
-            </div>
-            <div class="bg-white h-full w-[2px] opacity-30"></div>
-            <div class="flex-col col">
-              <h5 class="lg:text-[12px] text-[8px] text-slate-500">STATUS</h5>
-              <h5 class="lg:text-[12px] text-[8px] text-slate-100">
-                {{ detailMovie?.status }}
-              </h5>
-            </div>
-            <div class="bg-white h-full w-[2px] opacity-30"></div>
-            <div class="flex-col col">
-              <h5 class="lg:text-[12px] text-[8px] text-slate-500">LANGUAGE</h5>
-              <h5 class="lg:text-[12px] text-[8px] text-slate-100">
-                {{ formaterLanguage(detailMovie?.original_language ?? "") }}
-              </h5>
-            </div>
-            <div class="bg-white h-full w-[2px] opacity-30"></div>
-            <div class="flex-col col">
-              <h5 class="lg:text-[12px] text-[8px] text-slate-500">BUDGET</h5>
-              <h5 class="lg:text-[12px] text-[8px] text-slate-100">
-                {{ formatCurrency(detailMovie?.budget ?? 0) }}
-              </h5>
-            </div>
-            <div class="bg-white h-full w-[2px] opacity-30"></div>
-            <div class="flex-col col">
-              <h5 class="lg:text-[12px] text-[8px] text-slate-500">PRODUCTION</h5>
-              <div class="flex flex-row gap-2">
-                <h5
-                  v-for="(
-                    prod, index
-                  ) in detailMovie?.production_companies?.splice(0, 3)"
-                  :key="index"
-                  class="lg:text-[12px] text-[8px] text-slate-100 gap-2"
-                >
-                  {{ prod.name }}
-                </h5>
+          </div>
+        </div>
+
+        <!-- detail review -->
+        <div class="w-full h-[541px] px-10 pt-8 md:pt-48 md:px-36 bg-white">
+          <p class="text-custom-red text-lg font-semibold">Reviews</p>
+          <div class="grid mt-5 grid-cols-1 lg:grid-cols-2 gap-4 w-full">
+            <!-- Card Review -->
+            <div
+              v-for="(itemReview, index) in reviewMovie?.results.slice(0, 6)"
+              :key="index"
+              class="w-full bg-card-gray p-6 shadow-lg rounded-xl"
+            >
+              <div class="flex flex-col">
+                <div class="flex-row flex justify-between">
+                  <div class="flex-row flex gap-2 items-center">
+                    <div
+                      class="h-[48px] w-[48px] bg-gray-300 rounded-[24px] overflow-hidden"
+                    >
+                      <img
+                        :src="uriImg + itemReview?.author_details.avatar_path"
+                        alt=""
+                        class="w-full h-full object-cover"
+                        srcset=""
+                      />
+                    </div>
+                    <div class="flex-col flex">
+                      <h4 class="text-black font-bold">
+                        {{ itemReview.author }}
+                      </h4>
+                      <h5 class="text-gray-400 font-normal">
+                        {{
+                          new Intl.DateTimeFormat("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                          }).format(new Date(itemReview.updated_at))
+                        }}
+                      </h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex-row flex gap-2 px-3 py-1 items-center bg-gray-200 rounded-md"
+                  >
+                    <div class="h-[17px] w-[17px] overflow-hidden">
+                      <img
+                        src="/assets/startRating.png"
+                        class="object-cover w-full h-full"
+                      />
+                    </div>
+                    <div class="flex-col flex">
+                      <h4 class="text-black text-[36px] font-bold">
+                        {{
+                          formatRating(itemReview.author_details.rating ?? 0)
+                        }}
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+                <p
+                  class="mt-4 text-[13px] text-gray-600"
+                  v-html="truncateText(itemReview.content, 230)"
+                ></p>
               </div>
             </div>
           </div>
+          <div class="bg-card-gray text-lg mt-2 font-semibold mb-6"></div>
+          <!-- Load More Comment -->
+          <div
+            v-if="reviewMovie?.results.length === 0"
+            class="flex flex-row w-full justify-center mt-3"
+          >
+            <p class="text-lg text-slate-800 font-semibold">Tidak Ada Review</p>
+          </div>
 
-          <!-- detail review -->
-          <div class="w-full h-[541px] px-10 pt-8 md:pt-48 md:px-36 bg-white">
-            <p class="text-custom-red text-lg font-semibold">Reviews</p>
-            <div class="grid mt-5 grid-cols-1 lg:grid-cols-2 gap-4 w-full">
-              <!-- Card Review -->
-              <div
-                v-for="(itemReview, index) in reviewMovie?.results.slice(0, 6)"
-                :key="index"
-                class="w-full bg-card-gray p-6 shadow-lg rounded-xl"
-              >
-                <div class="flex flex-col">
-                  <div class="flex-row flex justify-between">
-                    <div class="flex-row flex gap-2 items-center">
-                      <div
-                        class="h-[48px] w-[48px] bg-gray-300 rounded-[24px] overflow-hidden"
-                      >
-                        <img
-                          :src="uriImg + itemReview?.author_details.avatar_path"
-                          alt=""
-                          class="w-full h-full object-cover"
-                          srcset=""
-                        />
-                      </div>
-                      <div class="flex-col flex">
-                        <h4 class="text-black font-bold">
-                          {{ itemReview.author }}
-                        </h4>
-                        <h5 class="text-gray-400 font-normal">
-                          {{
-                            new Intl.DateTimeFormat("en-US", {
-                              month: "long",
-                              day: "numeric",
-                              year: "numeric",
-                            }).format(new Date(itemReview.updated_at))
-                          }}
-                        </h5>
-                      </div>
-                    </div>
-                    <div
-                      class="flex-row flex gap-2 px-3 py-1 items-center bg-gray-200 rounded-md"
-                    >
-                      <div class="h-[17px] w-[17px] overflow-hidden">
-                        <img
-                          src="/assets/startRating.png"
-                          class="object-cover w-full h-full"
-                        />
-                      </div>
-                      <div class="flex-col flex">
-                        <h4 class="text-black text-[36px] font-bold">
-                          {{
-                            formatRating(itemReview.author_details.rating ?? 0)
-                          }}
-                        </h4>
-                      </div>
-                    </div>
-                  </div>
-                  <p
-                    class="mt-4 text-[13px] text-gray-600"
-                    v-html="truncateText(itemReview.content, 230)"
-                  ></p>
-                </div>
-              </div>
-            </div>
-            <div class="bg-card-gray text-lg mt-2 font-semibold mb-6"></div>
-            <!-- Load More Comment -->
+          <div
+            v-if="
+              !isLoading && pageinit == 1 && reviewMovie?.results.length !== 0
+            "
+            class="flex justify-center flex-row mt-3"
+          >
             <div
-              v-if="reviewMovie?.results.length === 0"
-              class="flex flex-row w-full justify-center mt-3"
+              @click="handleLoadMore(1, true)"
+              class="bg-custom-red hover:bg-red-800 w-[151px] justify-center flex p-2 cursor-pointer hover: rounded-2xl text-slate-100"
             >
-              <p class="text-lg text-slate-800 font-semibold">
-                Tidak Ada Review
-              </p>
+              Next &gt;
             </div>
-
+          </div>
+          <div
+            v-if="!isLoading && pageinit !== 1"
+            class="flex mt-5 gap-2 justify-center flex-row"
+          >
             <div
-              v-if="
-                !isLoading && pageinit == 1 && reviewMovie?.results.length !== 0
-              "
-              class="flex justify-center flex-row mt-3"
+              @click="handleLoadMore(1, false)"
+              class="bg-custom-red hover:bg-red-600 z-10 w-[151px] justify-center flex p-2 cursor-pointer rounded-2xl text-slate-100"
             >
-              <div
-                @click="handleLoadMore(1, true)"
-                class="bg-custom-red hover:bg-red-800 w-[151px] justify-center flex p-2 cursor-pointer hover: rounded-2xl text-slate-100"
-              >
-                Next &gt;
-              </div>
+              &lt; Prev
             </div>
             <div
-              v-if="!isLoading && pageinit !== 1"
-              class="flex mt-5 gap-2 justify-center flex-row"
+              v-if="reviewMovie?.results.length !== 0"
+              @click="handleLoadMore(1, true)"
+              class="bg-custom-red hover:bg-red-600 z-10 w-[151px] justify-center flex p-2 cursor-pointer hover: rounded-2xl text-slate-100"
             >
-              <div
-                @click="handleLoadMore(1, false)"
-                class="bg-custom-red hover:bg-red-600 z-10 w-[151px] justify-center flex p-2 cursor-pointer rounded-2xl text-slate-100"
-              >
-                &lt; Prev
-              </div>
-              <div
-                v-if="reviewMovie?.results.length !== 0"
-                @click="handleLoadMore(1, true)"
-                class="bg-custom-red hover:bg-red-600 z-10 w-[151px] justify-center flex p-2 cursor-pointer hover: rounded-2xl text-slate-100"
-              >
-                Next &gt;
-              </div>
+              Next &gt;
             </div>
           </div>
         </div>
+      </div>
 
       <!-- Floating card info -->
       <div class="absolute hidden lg:block top-[15%] w-full h-full px-28">
@@ -330,7 +322,10 @@ watch([pageinit], async () => {
       </div>
     </div>
   </div>
-  <div v-if="!isLoading" class="flex w-full bg-slate-800 px-10 lg:px-20 py-20 flex-col">
+  <div
+    v-if="!isLoading"
+    class="flex w-full bg-slate-800 px-10 lg:px-20 py-20 flex-col"
+  >
     <p class="text-slate-100">RECOMMENDATION MOVIES</p>
     <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mt-3">
       <div
