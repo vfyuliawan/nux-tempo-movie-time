@@ -101,9 +101,9 @@ watch([pageinit], async () => {
 <template>
   <div
     v-if="isLoading"
-    class="w-full h-[100vh] bg-slate-600 flex justify-center"
+    class="w-full h-[100vh] bg-slate-600 pt-32 flex justify-center"
   >
-    <Loading :color="'text-custom-red'" :class="'mt-10'" />
+    <Loading :color="'text-custom-red'" :class="'mt-32'" />
   </div>
   <div id="loadingId" v-if="!isLoading"
     :class="
