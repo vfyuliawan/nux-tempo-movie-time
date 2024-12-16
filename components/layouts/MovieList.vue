@@ -239,7 +239,7 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
                     class="relative flex  flex-col overflow-hidden group"
                   >
                     <div
-                      class="xl:h-[330px] w-full min-h-[150px] bg-slate-800 bg-opacity-60  overflow-hidden relative"
+                      class="xl:h-[330px] w-full min-h-[188px] bg-slate-800 bg-opacity-60  overflow-hidden relative"
                     >
                       <img
                         :src="baseImgUrl + item.poster_path"
@@ -295,13 +295,13 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
                         </div>
                         <button
                         @click="handleChoseMovie(item)"
-                          class="bg-custom-red mt-3 px-12 py-2  sm:mt-6 sm:px-14 hover:bg-red-700 justify-center flexm cursor-pointer rounded-2xl  md:rounded-2xl text-slate-100"
+                          class="bg-custom-red mt-3 px-12 py-2 md:text-sm text-[10px]  sm:mt-6 sm:px-14 hover:bg-red-700 justify-center flexm cursor-pointer rounded-2xl  md:rounded-2xl text-slate-100"
                         >
                           View
                         </button>
                         <button
                         @click="handleAddMovieFavorite({favorite: true, media_id:item.id, media_type:'movie'  })"
-                          class=" focus:bg-focus-green focus:text-slate-600 focus:outline-none focus:ring focus:border-white bg-transparent mt-3 px-12 py-2 sm:mt-6 sm:px-14 justify-center flex p-2 cursor-pointer rounded-2xl   md:rounded-3xl border border-white text-slate-100"
+                          class=" focus:bg-focus-green md:text-sm text-[10px] focus:text-slate-600 focus:outline-none focus:ring focus:border-white bg-transparent mt-3 px-12 py-2 sm:mt-6 sm:px-14 justify-center flex p-2 cursor-pointer rounded-2xl   md:rounded-3xl border border-white text-slate-100"
                         >
                           Add
                         </button>
