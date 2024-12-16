@@ -222,10 +222,10 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
                   <div
                     v-for="(item, index) in movieList?.results"
                     :key="index"
-                    class="relative flex flex-col overflow-hidden group"
+                    class="relative flex  flex-col overflow-hidden group"
                   >
                     <div
-                      class="xl:h-[330px] w-full bg-black bg-opacity-50 overflow-hidden relative"
+                      class="xl:h-[330px] w-full min-h-[150px] bg-slate-800 bg-opacity-60 bg-opacity-50 overflow-hidden relative"
                     >
                       <img
                         :src="baseImgUrl + item.poster_path"
@@ -238,8 +238,8 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
                       <div
                         class="w-[48px] justify-center flex items-center h-[32px] bg-black opacity-75 text-slate-50"
                       >
-                        <p class="text-sm text-slate-200">
-                          {{ formatRating(item.popularity) }}
+                        <p class="text-sm  text-slate-200">
+                          {{ formatRating(item.vote_average) }}
                         </p>
                       </div>
                     </div>
@@ -260,17 +260,17 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
                               alt="Rating Icon"
                             />
                           </div>
-                          <p class="text-slate-100 text-lg">
+                          <p class="text-slate-100 text-sm md:text-lg">
                             {{ formatRating(item.vote_average) }}
                           </p>
                         </div>
-                        <div class="flex flex-wrap justify-center px-2 gap-2">
+                        <div class="flex flex-wrap justify-center px-2 gap-1 md:gap-2">
                           <p
                             v-for="(itemGenre, index2) in getGenreName(
                               item.genre_ids
                             )"
                             :key="index2"
-                            class="text-slate-50 text-sm"
+                            class="text-slate-50 text-[8px] md:text-sm"
                           >
                             {{
                               itemGenre === "Science Fiction"
@@ -297,12 +297,12 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
 
                     <!-- Movie Info -->
                     <div class="flex ms-3 flex-col gap-2 mt-2">
-                      <p class="text-slate-50 text-md font-semibold">
+                      <p class="text-slate-50 text-[13px] md:text-md font-semibold">
                         {{ item.title }}
                       </p>
                       <div class="flex flex-row gap-2">
                         <p
-                          class="text-slate-400 text-sm"
+                          class="text-slate-400 md:text-sm text-[10px]"
                         >
                         {{ formatingYears(item.release_date) }}
                         </p>
