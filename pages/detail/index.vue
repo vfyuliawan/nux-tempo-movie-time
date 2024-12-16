@@ -36,8 +36,7 @@ const fetchMovieDetails = async (id: string) => {
   if (response !== null) {
     detailMovie.value = response;
     isLoading.value = false;
-        // pageinit.value = 1;
-
+    // pageinit.value = 1;
   }
 };
 
@@ -75,8 +74,7 @@ const handleLoadMore = (paramsPage: number, add: boolean) => {
 
 watchEffect(() => {
   const movieId = route.query.id;
-  fetchMovieDetails(movieId?.toString() ?? "").then(() => {
-  });
+  fetchMovieDetails(movieId?.toString() ?? "").then(() => {});
   fetchReviewMovieDetail(movieId?.toString() ?? "");
   fetchRecomendationMovie(movieId?.toString() ?? "");
 });
@@ -125,13 +123,12 @@ watch([pageinit], async () => {
 
       <!-- detail -->
       <div class="flex flex-col w-full">
-        <!-- <div class="w-full px-3 sm:px-0 h-[80px] py-4 bg-black gap-4 opacity-85 flex flex-row justify-center items-center">
-
-          </div> -->
         <div
           class="w-full px-5 sm:px-0 h-[80px] py-4 bg-black gap-[5px] lg:gap-3 opacity-85 flex flex-row justify-center items-center"
         >
-          <div class="h-[16px]  w-[16px] md:h-[32px]  md:w-[32px]  overflow-hidden">
+          <div
+            class="h-[16px] w-[16px] md:h-[32px] md:w-[32px] overflow-hidden"
+          >
             <img
               src="/assets/startRating.png"
               class="object-cover w-full h-full"
@@ -170,16 +167,39 @@ watch([pageinit], async () => {
           <div class="bg-white h-full w-[1px] md:w-[2px] opacity-30"></div>
           <div class="flex-col col">
             <h5 class="lg:text-[12px] text-[8px] text-slate-500">PRODUCTION</h5>
-              <h5
-                class="lg:text-[12px] text-[8px] text-slate-100"
-              >
-                {{ detailMovie?.production_companies[0].name}}
-              </h5>
+            <h5 class="lg:text-[12px] text-[8px] text-slate-100">
+              {{ detailMovie?.production_companies[0].name }}
+            </h5>
           </div>
         </div>
 
         <!-- detail review -->
         <div class="w-full h-[541px] px-10 pt-8 md:pt-48 md:px-36 bg-white">
+          <div class="mb-10">
+              <p class="text-slate-700 text-[10px] lg:text-[18px] font-normal">
+                {{ detailMovie?.release_date.toString().split("-")[0] }}
+              </p>
+              <p class="text-slate-700 text-[18px] lg:text-[36px] font-semibold">
+                {{ detailMovie?.title }}
+              </p>
+              <div class="flex flex-row gap-2">
+                <p
+                  v-for="(genre, index) in detailMovie?.genres"
+                  :key="index"
+                  class="text-slate-700 text-[10px] lg:text-[18px] font-normal"
+                >
+                  {{ genre.name }}
+                </p>
+              </div>
+            </div>
+          <div class=" flex-col flex sm:hidden mb-4">
+            <p class="text-custom-red text-lg font-semibold">Overview</p>
+          <p class="mt-4 text-[13px] text-gray-600">
+            {{ truncateText(detailMovie?.overview ?? "", 5000) }}
+          </p>
+          </div>
+      
+
           <p class="text-custom-red text-lg font-semibold">Reviews</p>
           <div class="grid mt-5 grid-cols-1 lg:grid-cols-2 gap-4 w-full">
             <!-- Card Review -->
