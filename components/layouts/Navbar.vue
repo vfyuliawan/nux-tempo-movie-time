@@ -11,6 +11,11 @@
             <Bars3Icon v-if="!open" class="block size-6" aria-hidden="true" />
             <XMarkIcon v-else class="block size-6" aria-hidden="true" />
           </DisclosureButton>
+          <div>
+            <Autocomplete class="w-11/12 md:hidden" />
+
+          </div>
+
         </div>
         <div
           class="flex flex-1 items-center justify-between relative sm:static sm:blocksm:items-center"
@@ -25,6 +30,9 @@
               alt="Movie Time"
             />
           </NuxtLink>
+
+         
+
 
           <!-- menu -->
 

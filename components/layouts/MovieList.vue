@@ -225,7 +225,7 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
                     class="relative flex  flex-col overflow-hidden group"
                   >
                     <div
-                      class="xl:h-[330px] w-full min-h-[150px] bg-slate-800 bg-opacity-60 bg-opacity-50 overflow-hidden relative"
+                      class="xl:h-[330px] w-full min-h-[150px] bg-slate-800 bg-opacity-60  overflow-hidden relative"
                     >
                       <img
                         :src="baseImgUrl + item.poster_path"
