@@ -108,7 +108,7 @@ watch([pageinit], async () => {
     id="loadingId"
     v-if="!isLoading"
     :class="
-      reviewMovie?.results.length === 0 ? 'h-[100vh]' : 'h-[250vh] lg:h-[160vh]'
+      reviewMovie?.results.length === 0 ? 'h-[100vh]' : 'h-[270vh] lg:h-[160vh]'
     "
     class="w-full bg-white"
   >
@@ -123,51 +123,53 @@ watch([pageinit], async () => {
       ></div>
 
       <!-- detail -->
-      <div class="w-full">
-        <div class="flex flex-col">
+        <div class="flex flex-col w-full">
+          <!-- <div class="w-full px-3 sm:px-0 h-[80px] py-4 bg-black gap-4 opacity-85 flex flex-row justify-center items-center">
+
+          </div> -->
           <div
-            class="w-full px-3 sm:px-0 h-[80px] py-4 bg-black gap-4 opacity-85 flex flex-row justify-center items-center"
+            class="w-full px-5 sm:px-0 h-[80px] py-4 bg-black gap-[5px] lg:gap-3 opacity-85 flex flex-row justify-center items-center"
           >
             <div class="h-[32px] w-[32px] overflow-hidden">
               <img
                 src="/assets/startRating.png"
-                class="object-cover w-full h-full"
+                class="object-cover w-full h-full sm:block hidden"
               />
             </div>
-            <h3 class="text-slate-50 text-[36px]">
+            <h3 class="text-slate-50 text-[10px] lg:text-[36px]">
               {{ formatRating(detailMovie?.vote_average ?? 0) }}
             </h3>
             <div class="flex-col col">
-              <h5 class="text-[12px] text-slate-500">USERSCORE</h5>
-              <h5 class="text-[12px] text-slate-100">
+              <h5 class="lg:text-[12px] text-[8px] text-slate-500">USERSCORE</h5>
+              <h5 class="lg:text-[12px] text-[8px] text-slate-100">
                 {{ detailMovie?.vote_count }} Votes
               </h5>
             </div>
             <div class="bg-white h-full w-[2px] opacity-30"></div>
             <div class="flex-col col">
-              <h5 class="text-[12px] text-slate-500">STATUS</h5>
-              <h5 class="text-[12px] text-slate-100">
+              <h5 class="lg:text-[12px] text-[8px] text-slate-500">STATUS</h5>
+              <h5 class="lg:text-[12px] text-[8px] text-slate-100">
                 {{ detailMovie?.status }}
               </h5>
             </div>
             <div class="bg-white h-full w-[2px] opacity-30"></div>
             <div class="flex-col col">
-              <h5 class="text-[12px] text-slate-500">LANGUAGE</h5>
-              <h5 class="text-[12px] text-slate-100">
+              <h5 class="lg:text-[12px] text-[8px] text-slate-500">LANGUAGE</h5>
+              <h5 class="lg:text-[12px] text-[8px] text-slate-100">
                 {{ formaterLanguage(detailMovie?.original_language ?? "") }}
               </h5>
             </div>
             <div class="bg-white h-full w-[2px] opacity-30"></div>
             <div class="flex-col col">
-              <h5 class="text-[12px] text-slate-500">BUDGET</h5>
-              <h5 class="text-[12px] text-slate-100">
+              <h5 class="lg:text-[12px] text-[8px] text-slate-500">BUDGET</h5>
+              <h5 class="lg:text-[12px] text-[8px] text-slate-100">
                 {{ formatCurrency(detailMovie?.budget ?? 0) }}
               </h5>
             </div>
             <div class="bg-white h-full w-[2px] opacity-30"></div>
             <div class="flex-col col">
-              <h5 class="text-[12px] text-slate-500">PRODUCTION</h5>
-              <div class="flex flex-row gap-2">
+              <h5 class="lg:text-[12px] text-[8px] text-slate-500">PRODUCTION</h5>
+              <div class="lg:text-[12px] text-[8px] text-slate-100 gap-2">
                 <h5
                   v-for="(
                     prod, index
@@ -239,7 +241,7 @@ watch([pageinit], async () => {
                   </div>
                   <p
                     class="mt-4 text-[13px] text-gray-600"
-                    v-html="truncateText(itemReview.content, 500)"
+                    v-html="truncateText(itemReview.content, 230)"
                   ></p>
                 </div>
               </div>
@@ -288,7 +290,6 @@ watch([pageinit], async () => {
             </div>
           </div>
         </div>
-      </div>
 
       <!-- Floating card info -->
       <div class="absolute hidden lg:block top-[15%] w-full h-full px-28">
