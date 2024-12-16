@@ -73,7 +73,9 @@ const handleLoadMore = (paramsPage: number, add: boolean) => {
 
 watchEffect(() => {
   const movieId = route.query.id;
-  fetchMovieDetails(movieId?.toString() ?? "");
+  fetchMovieDetails(movieId?.toString() ?? "").then(() =>{
+    pageinit.value =1
+  });
   fetchReviewMovieDetail(movieId?.toString() ?? "");
   fetchRecomendationMovie(movieId?.toString() ?? "");
 });
@@ -112,7 +114,7 @@ watch([pageinit], async () => {
   >
     <div class="w-full relative">
       <div
-        class="w-full h-[340px] overflow-hidden bg-red-100 opacity-75"
+        class="w-full h-[340px] overflow-hidden bg-slate-500 opacity-75"
         :style="{
           backgroundImage: `url(${uriImg + detailMovie?.backdrop_path})`,
           backgroundSize: 'cover',
@@ -327,7 +329,7 @@ watch([pageinit], async () => {
       </div>
     </div>
   </div>
-  <div v-if="!isLoading" class="flex w-full bg-slate-800 px-20 py-20 flex-col">
+  <div v-if="!isLoading" class="flex w-full bg-slate-800 px-10 lg:px-20 py-20 flex-col">
     <p class="text-slate-100">RECOMMENDATION MOVIES</p>
     <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mt-3">
       <div
