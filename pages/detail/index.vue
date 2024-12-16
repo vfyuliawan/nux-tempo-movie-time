@@ -36,6 +36,8 @@ const fetchMovieDetails = async (id: string) => {
   if (response !== null) {
     detailMovie.value = response;
     isLoading.value = false;
+        // pageinit.value = 1;
+
   }
 };
 
@@ -74,7 +76,6 @@ const handleLoadMore = (paramsPage: number, add: boolean) => {
 watchEffect(() => {
   const movieId = route.query.id;
   fetchMovieDetails(movieId?.toString() ?? "").then(() => {
-    pageinit.value = 1;
   });
   fetchReviewMovieDetail(movieId?.toString() ?? "");
   fetchRecomendationMovie(movieId?.toString() ?? "");
