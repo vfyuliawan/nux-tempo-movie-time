@@ -6,7 +6,7 @@ import type { DetailMovieInterface } from "../../interfaces/detailMovie";
 import { GeneralEnum } from "../../types/generalEnum";
 import type { ReviewsMovieInterface } from "../../interfaces/reviewMovie";
 import type { MoviesInterface } from "../../interfaces/movies";
-import type { Result } from '../../interfaces/movies';
+import type { Result } from "../../interfaces/movies";
 
 const route = useRoute();
 const router = useRouter();
@@ -83,7 +83,7 @@ const handleChoseMovie = (item: Result) => {
   if (movieListElement) {
     movieListElement.scrollIntoView({
       behavior: "smooth",
-      block: "start",    
+      block: "start",
     });
   }
   router.push({ path: "/detail", query: { id: item.id } });
@@ -93,9 +93,6 @@ watch([pageinit], async () => {
   const movieId = route.query.id;
   await fetchReviewMovieDetail(movieId?.toString() ?? "");
 });
-
-
-
 </script>
 
 <template>
@@ -105,22 +102,26 @@ watch([pageinit], async () => {
   >
     <Loading :color="'text-custom-red'" :class="'mt-32'" />
   </div>
-  <div id="loadingId" v-if="!isLoading"
+  <div
+    id="loadingId"
+    v-if="!isLoading"
     :class="
       reviewMovie?.results.length === 0 ? 'h-[100vh]' : 'h-[250vh] lg:h-[160vh]'
     "
     class="w-full bg-white"
   >
     <div class="w-full relative">
-      <div class="w-full h-[750px] bg-black opacity-75">
-        <img
-          :src="uriImg + detailMovie?.backdrop_path"
-          class="opacity-70 object-cover w-full"
-        />
-      </div>
+      <div
+        class="w-full h-[300px] overflow-hidden bg-red-100 opacity-75"
+        :style="{
+          backgroundImage: `url(${uriImg + detailMovie?.backdrop_path})`,
+          backgroundSize: 'containt',
+          backgroundPosition: 'center',
+        }"
+      ></div>
 
       <!-- detail -->
-      <div class="absolute top-[50%] w-full h-full">
+      <div class="w-full">
         <div class="flex flex-col">
           <div
             class="w-full px-3 sm:px-0 h-[80px] py-4 bg-black gap-4 opacity-85 flex flex-row justify-center items-center"
@@ -179,7 +180,7 @@ watch([pageinit], async () => {
           </div>
 
           <!-- detail review -->
-          <div class="w-full h-[541px] pt-8 lg:pt-48 px-36 bg-white">
+          <div class="w-full h-[541px] px-10 pt-8 md:pt-48 md:px-36 bg-white">
             <p class="text-custom-red text-lg font-semibold">Reviews</p>
             <div class="grid mt-5 grid-cols-1 lg:grid-cols-2 gap-4 w-full">
               <!-- Card Review -->
@@ -288,7 +289,7 @@ watch([pageinit], async () => {
       </div>
 
       <!-- Floating card info -->
-      <div class="absolute hidden lg:block top-[30%] w-full h-full px-28">
+      <div class="absolute hidden lg:block top-[15%] w-full h-full px-28">
         <div class="flex w-full h-[400px] flex-row">
           <div class="flex">
             <img :src="uriImg + detailMovie?.poster_path" alt="" srcset="" />
@@ -326,7 +327,7 @@ watch([pageinit], async () => {
       </div>
     </div>
   </div>
-  <div  v-if="!isLoading" class="flex w-full bg-slate-800 px-20 py-20 flex-col">
+  <div v-if="!isLoading" class="flex w-full bg-slate-800 px-20 py-20 flex-col">
     <p class="text-slate-100">RECOMMENDATION MOVIES</p>
     <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mt-3">
       <div
