@@ -107,7 +107,7 @@ watch([pageinit], async () => {
   </div>
   <div id="loadingId" v-if="!isLoading"
     :class="
-      reviewMovie?.results.length === 0 ? 'h-[100vh]' : 'h-[300vh] lg:h-[180vh]'
+      reviewMovie?.results.length === 0 ? 'h-[100vh]' : 'h-[250vh] lg:h-[160vh]'
     "
     class="w-full bg-white"
   >
