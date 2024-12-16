@@ -175,7 +175,7 @@ watch([pageinit], async () => {
 
         <!-- detail review -->
         <div class="w-full h-[541px] px-10 pt-8 md:pt-48 md:px-36 bg-white">
-          <div class="mb-10">
+          <div class="mb-5">
               <p class="text-slate-700 text-[10px] lg:text-[18px] font-normal">
                 {{ detailMovie?.release_date.toString().split("-")[0] }}
               </p>
