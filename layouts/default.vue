@@ -3,15 +3,12 @@ import type { Genre } from '~/interfaces/genre';
 import { useMovies } from '../composables/useMovies';
 import type { DropdownItem } from '../components/Dropdown.vue';
 
-// Fetch genres
 const { getMovieGenres } = useMovies();
 const genres = ref<Genre[]>([]);
 const res = await getMovieGenres();
 genres.value = res?.genres ?? [];
 
-// Callback for genre selection
 const genreSelected = (item: DropdownItem) => {
-  console.log('Selected genre:', item);
 };
 </script>
 
@@ -22,7 +19,6 @@ const genreSelected = (item: DropdownItem) => {
     </header>
 
     <main>
-      <!-- Pass slot props -->
       <slot  />
     </main>
 

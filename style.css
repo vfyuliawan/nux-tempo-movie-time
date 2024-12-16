@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+  --font-montserrat: 'Montserrat', sans-serif;
+}
+
 #app {
     height: 100%;
   }
@@ -9,7 +15,7 @@
   
   body {
     background: #eee;
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-family: Montserrat, Helvetica, Arial, sans-serif;
     font-size: 14px;
     color: #000;
     margin: 0;

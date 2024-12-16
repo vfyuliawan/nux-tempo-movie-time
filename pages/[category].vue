@@ -15,11 +15,11 @@ const category = computed(() => route.params.category);
 
 
 useSeoMeta({
-  title: "My Amazing Site",
-  ogTitle: "My Amazing Site",
-  description: "This is my amazing site, let me tell you all about it.",
-  ogDescription: "This is my amazing site, let me tell you all about it.",
-  ogImage: "https://example.com/image.png",
+  title: "TMDB Movie - Home",
+  ogTitle: "TMDB Movie - Home",
+  description: "Explore the best movies, trailers, and reviews at TMDB Movie. Find your next favorite movie today!",
+  ogDescription: "Explore the best movies, trailers, and reviews at TMDB Movie. Find your next favorite movie today!",
+  ogImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN8TpRfeoLQp1Qkwmz5t7pskPsggM9K_Noxg&s", 
   twitterCard: "summary_large_image",
 });
 
@@ -33,7 +33,7 @@ definePageMeta({
 
 <template>
   <div>
-    <div class="bg-slate-700 p-10">
+    <div class="bg-slate-700 pl-10 pr-10 pt-20 pb-10">
       <LayoutsHero />
       
     </div>

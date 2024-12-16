@@ -264,7 +264,7 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
                             {{ formatRating(item.vote_average) }}
                           </p>
                         </div>
-                        <div class="flex flex-row gap-2">
+                        <div class="flex flex-wrap justify-center px-2 gap-2">
                           <p
                             v-for="(itemGenre, index2) in getGenreName(
                               item.genre_ids

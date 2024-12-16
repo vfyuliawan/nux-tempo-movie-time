@@ -112,7 +112,7 @@ watch([pageinit], async () => {
     class="w-full bg-white"
   >
     <div class="w-full relative">
-      <div class="w-full h-[750px] bg-black opacity-50">
+      <div class="w-full h-[750px] bg-black opacity-75">
         <img
           :src="uriImg + detailMovie?.backdrop_path"
           class="opacity-70 object-cover w-full"
