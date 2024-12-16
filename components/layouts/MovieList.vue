@@ -297,7 +297,7 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
 
                     <!-- Movie Info -->
                     <div class="flex ms-3 flex-col gap-2 mt-2">
-                      <p class="text-slate-50 text-lg font-semibold">
+                      <p class="text-slate-50 text-md font-semibold">
                         {{ item.title }}
                       </p>
                       <div class="flex flex-row gap-2">

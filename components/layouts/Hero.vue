@@ -54,11 +54,11 @@ const handleChoseMovie = (item: Result) => {
   <swiper
     :slidesPerView="3"
     :centeredSlides="true"
-    :spaceBetween="200"
+    :spaceBetween="130"
     :pagination="{ clickable: true }"
     :autoplay="{ delay: 3000, disableOnInteraction: false }"
     :modules="modules"
-    class="mySwiper"
+    class="mySwiper "
     @slideChange="onSlideChange"
   >
     <swiper-slide
