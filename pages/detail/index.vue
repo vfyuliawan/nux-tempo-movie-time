@@ -174,8 +174,8 @@ watch([pageinit], async () => {
         </div>
 
         <!-- detail review -->
-        <div class="w-full h-[541px] px-10 pt-8 md:pt-48 md:px-36 bg-white">
-          <div class="mb-5">
+        <div class="w-full h-[541px] px-10 pt-8 md:pt-16 lg:pt-48 md:px-36 bg-white">
+          <div class="mb-5  flex-col flex lg:hidden">
               <p class="text-slate-700 text-[10px] lg:text-[18px] font-normal">
                 {{ detailMovie?.release_date.toString().split("-")[0] }}
               </p>
@@ -192,7 +192,7 @@ watch([pageinit], async () => {
                 </p>
               </div>
             </div>
-          <div class=" flex-col flex sm:hidden mb-4">
+          <div class=" flex-col flex lg:hidden mb-4">
             <p class="text-custom-red text-lg font-semibold">Overview</p>
           <p class="mt-4 text-[13px] text-gray-600">
             {{ truncateText(detailMovie?.overview ?? "", 5000) }}
