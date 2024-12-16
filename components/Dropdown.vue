@@ -55,9 +55,9 @@ const handleClick = (item: DropdownItem, close: () => void) => {
   <Menu as="div" class="relative inline-block text-left">
     <div>
       <MenuButton
-        class="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-700"
+        class="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-transparent px-3 py-2 text-[10px] md:text-sm font-semibold text-white shadow-sm ms-3 md:ms-0 hover:bg-gray-700"
       >
-        <div class="w-[20px] items-center justify-center flex h-[20px]">
+        <div class="lg:text-sm w-[20px] text-[20px]  items-center justify-center flex h-[20px]">
           <img :src="img" alt="icon" class="overflow-hidden" />
         </div>
         {{ dynamicLabel }}
@@ -88,7 +88,7 @@ const handleClick = (item: DropdownItem, close: () => void) => {
                 active
                   ? 'bg-gray-100 text-gray-900 outline-none'
                   : 'text-gray-700',
-                'block px-4 py-2 text-sm',
+                'block px-4 py-2 text-[10px] md:text-sm',
               ]"
             >
               {{ item.name }}

@@ -37,8 +37,9 @@ const getGenreName = (genresId: number[]) => {
 };
 
 dropDownValue.value = [
-  { id: "popularity.asc", name: "Popularity Ascending" } as DropdownItem,
   { id: "popularity.desc", name: "Popularity Descending" } as DropdownItem,
+  { id: "popularity.asc", name: "Popularity Ascending" } as DropdownItem,
+
   {
     id: "primary_release_date.asc",
     name: "Release Date Ascending",
@@ -157,10 +158,23 @@ const handleDropdownClick = (item: { name: string; id: string }) => {
           <p class="text-white text-lg">Discover Movie</p>
         </div>
         <div
-          class="flex items-center justify-evenly sm:justify-start flex-row w-[180px]"
+          class="flex items-center justify-evenly sm:justify-start flex-row md:w-[200px] w-full"
         >
           <p class="text-slate-50 text-sm me-3">My Movies</p>
-          <p class="text-slate-50 text-sm">{{ favMovieLength }} Movies</p>
+          <div class="py-2 px-4 rounded-xl bg-slate-700">
+            <p class="text-slate-50 text-sm">{{ favMovieLength }} Movies</p>
+          </div>
+          <div class="md:hidden block">
+            <Dropdown
+              :to-route="false"
+              :onClick="handleDropdownClick"
+              :label="'Popularity Descending'"
+              :dropdown-menu="dropDownValue"
+              :img="'/assets/polygon.png'"
+              class="mt-5 mb-5 text-[8px]"
+            />
+          </div>
+         
         </div>
       </div>
       <div class="flex sm:flex-none flex-row mt-10">
