@@ -20,8 +20,8 @@ const pageRecomendation = ref<number>(1);
 const uriImg = GeneralEnum.baseUriImg;
 
 useSeoMeta({
-  title: `TMDB Movie - ${detailMovie?.value?.title}`,
-  ogTitle: `TMDB Movie - ${detailMovie?.value?.title}`,
+  title: `TMDB Movie - Details Movie`,
+  ogTitle: `TMDB Movie - Details Movie`,
   description: `${detailMovie.value?.overview} Watch this exciting movie now on TMDB!`,
   ogDescription: `${detailMovie.value?.overview} Watch this exciting movie now on TMDB!`,
   ogImage: `${uriImg}${detailMovie.value?.overview}`,
