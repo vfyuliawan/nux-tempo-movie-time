@@ -112,10 +112,10 @@ watch([pageinit], async () => {
   >
     <div class="w-full relative">
       <div
-        class="w-full h-[300px] overflow-hidden bg-red-100 opacity-75"
+        class="w-full h-[340px] overflow-hidden bg-red-100 opacity-75"
         :style="{
           backgroundImage: `url(${uriImg + detailMovie?.backdrop_path})`,
-          backgroundSize: 'containt',
+          backgroundSize: 'cover',
           backgroundPosition: 'center',
         }"
       ></div>
